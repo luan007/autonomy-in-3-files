@@ -4,7 +4,7 @@
 
 *A file-based, minimalist meta-prompt structure for autonomous agent behavior*
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17979699.svg)](https://doi.org/10.5281/zenodo.17979699)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17979540.svg)](https://doi.org/10.5281/zenodo.17979540)
 
 
 ---
