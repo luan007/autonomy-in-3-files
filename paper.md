@@ -84,54 +84,144 @@ Our work shares this appreciation for simplicity but differs in focus: rather th
 
 ---
 
-## 3. The Path-Way Protocol
+## 3. IDE as Autonomous Agent: A File-Based Architecture
 
-### 3.1 Overview
+### 3.1 The Core Insight
 
-The Path-Way Protocol consists of three Markdown files that together define an autonomous agent's objective, capabilities, and state:
+Modern AI-powered IDEs are not just code editors—they are **fully-featured autonomous agent platforms**. They possess:
 
-| File | Purpose | Mutability | Author |
-|------|---------|------------|--------|
-| `goal.md` | Defines the objective, constraints, methodology, and termination condition | Immutable during execution | Human |
-| `how-to.md` | Documents available tools and their usage | Growable (can be updated when new tools are created) | Human and/or Agent |
-| `path_way.md` | Records execution history and specifies next actions | Updated each iteration | Agent |
+- **Perception:** Can read any file in your project
+- **Action:** Can write files, run commands, browse the web
+- **Memory:** Files persist indefinitely, surviving session restarts
 
-### 3.2 File Specifications
+What's missing is not capability, but **structure**. The three-file protocol provides that structure.
 
-#### 3.2.1 `goal.md` — The Directive
+### 3.2 A Minimalist Meta-Prompt Structure
 
-The goal file establishes the strategic context for the agent. It specifies:
+The protocol uses three Markdown files as a **file-based cognitive architecture**:
 
-- **Background:** Domain context, persona, and constraints
-- **Objective:** What the agent should accomplish
-- **Methodology:** How the agent should approach the task (e.g., breadth-first exploration, iterative refinement)
-- **Termination condition:** When the task is complete (e.g., "at least 5 rounds of research")
-- **Output specification:** Expected deliverables
+| File | Cognitive Role | Agent Analogy | Persistence |
+|------|----------------|---------------|-------------|
+| `goal.md` | **Long-term Goal Memory** | The agent's "mission" | Static (set once) |
+| `how-to.md` | **Procedural Knowledge** | The agent's "skills" | Grows over time |
+| `path_way.md` | **Working Memory** | The agent's "scratchpad" | Updates each step |
 
-This file remains unchanged during execution, providing a stable reference that prevents goal drift across iterations.
+This maps directly to how autonomous agents are typically architected, but uses **plain text files instead of code**.
 
-#### 3.2.2 `how-to.md` — The Capability Reference
+### 3.3 File Roles in Detail
 
-The how-to file documents available tools and their usage patterns. This may include:
+#### `goal.md` — Long-Term Goal Memory
 
-- Custom scripts (e.g., data scrapers, API clients)
-- Command-line tools and their arguments
-- External services and how to access them
-- Best practices and common patterns
+This file is the agent's persistent objective. It answers:
+- **What** are we trying to achieve?
+- **How** should we approach it? (methodology)
+- **When** do we stop? (termination condition)
+- **What** does success look like? (output specification)
 
-This file can grow during execution. If the agent creates a new tool (through vibe coding or otherwise), it can document that tool in `how-to.md` for future iterations.
+**Key property:** This file does NOT change during execution. It provides stable guidance that prevents goal drift.
 
-#### 3.2.3 `path_way.md` — The Working Memory
+**Example:**
+```markdown
+## Objective
+Research trending AI content on Xiaohongshu for content creation strategy.
 
-The path_way file is the agent's mutable state. After each iteration, the agent records:
+## Methodology
+- Breadth-first keyword exploration
+- Deep-dive into high-engagement posts
+- Analyze comments for user pain points
 
-- **Round identifier:** Sequential numbering
-- **Action taken:** What was done in this iteration
-- **Observations:** What was learned or discovered
-- **Analysis:** Interpretation of the observations
-- **Next step:** What should be done in the subsequent iteration
+## Termination
+Complete at least 5 rounds of research.
 
-The "Next step" field is critical: it serves as the agent's self-authored prompt for the next iteration. In this way, **the output of iteration N becomes the input instruction for iteration N+1**, implementing recursive meta-prompting without code.
+## Output
+Research report with engagement data and 5 content recommendations.
+```
+
+#### `how-to.md` — Procedural Knowledge
+
+This file documents the agent's available tools. It's like a skill library:
+
+**Key property:** This file CAN grow. If the agent creates a new tool (via vibe coding), it documents it here for future use.
+
+**Example:**
+```markdown
+## Search Tool
+```bash
+node xhs-fetch.js search <keyword> --limit 10
+```
+Returns: JSON with post titles, likes, comments
+
+## Deep Fetch
+```bash
+node xhs-fetch.js detail <url> --comments
+```
+Returns: Full post content with comment text
+```
+
+#### `path_way.md` — Working Memory (Short-Term)
+
+This is the most important file. It serves as the agent's **working memory and self-prompt generator**.
+
+**Key property:** After each iteration, the agent writes:
+1. What it just did
+2. What it observed
+3. What it concluded
+4. **What to do next** ← This becomes the instruction for the next round
+
+**The magic:** The "Next Step" field from round N becomes the prompt for round N+1. The agent literally writes its own future instructions.
+
+**Example (after 3 rounds):**
+```markdown
+## Round 3
+
+**Action:** Searched "AI memes" and "AI sticker packs"
+
+**Observations:**
+- AI meme posts get 4000+ likes
+- "Deepseek sticker pack" post has 4479 likes
+- Philosophical AI content ("If the world is a program...") reached 107k likes
+
+**Analysis:** Entertainment content succeeds through surprise or emotional resonance.
+
+**Next Step:** Synthesize all findings into user personas, then generate content recommendations.
+```
+
+### 3.4 The Execution Loop
+
+```
+┌─────────────────────────────────────────┐
+│  1. Agent reads all 3 files             │
+│     - goal.md (what's the mission?)     │
+│     - how-to.md (what tools do I have?) │
+│     - path_way.md (what did I do last?) │
+├─────────────────────────────────────────┤
+│  2. Agent executes "Next Step" from     │
+│     the last path_way.md entry          │
+├─────────────────────────────────────────┤
+│  3. Agent appends new round to          │
+│     path_way.md with:                   │
+│     - Action, Observations, Analysis    │
+│     - New "Next Step" for next round    │
+├─────────────────────────────────────────┤
+│  4. Human sends continuation signal     │
+│     (in current IDEs, a simple message) │
+└─────────────────────────────────────────┘
+              ↑                    │
+              └────────────────────┘
+```
+
+### 3.5 Why This Works
+
+The protocol works because it separates concerns cleanly:
+
+| Concern | Solution | Benefit |
+|---------|----------|---------|
+| Goal stability | `goal.md` is immutable | No goal drift |
+| Tool discovery | `how-to.md` is documented | Agent knows what it can do |
+| Context persistence | `path_way.md` survives sessions | No token limit issues |
+| Self-direction | "Next Step" field | Recursive meta-prompting |
+| Transparency | All files are human-readable | Debug by reading |
+| Control | Human can edit any file | Redirect anytime |
 
 ### 3.3 The Execution Cycle
 

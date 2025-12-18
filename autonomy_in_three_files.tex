@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{CJKutf8}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{gray!10},
+  xleftmargin=0.5cm,
+  framexleftmargin=0.5cm
+}
+
+\title{\textbf{Autonomy in Three Files} \\
+\large Transforming AI-Powered IDEs into Self-Directing Agent Platforms}
+
+\author{Mike Luan\footnote{Repository: \url{https://github.com/luan007/autonomy-in-3-files}} \and Claude Opus}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Modern AI-powered integrated development environments (IDEs) such as Cursor, Windsurf, and VS Code with GitHub Copilot possess capabilities that extend well beyond code editing. These systems can read and write arbitrary files, execute terminal commands, browse the web, and maintain conversational context across sessions. Collectively, these capabilities constitute the essential components of an autonomous agent: perception, action, and memory.
+
+This paper introduces the \textbf{Path-Way Protocol}, a lightweight methodology that enables any file-capable IDE to function as a self-directing autonomous agent for arbitrary tasks---including research, content creation, and data analysis---using only three Markdown files. The protocol externalizes agent state into human-readable documents, enabling recursive self-prompting without custom code or external frameworks.
+
+We present the complete protocol specification, demonstrate its application through a detailed case study in social media market research, and provide reusable templates. The approach offers two distinctive properties: (1) \textbf{transparent interaction}, where all agent reasoning and state transitions are visible and editable by the human operator, and (2) \textbf{writing as coordination}, where natural language documents serve as the primary mechanism for human-agent and agent-self coordination.
+\end{abstract}
+
+\textbf{Keywords:} Autonomous Agents, Integrated Development Environments, Meta-Prompting, File-Based State Management, Extended Cognition, Human-AI Collaboration
+
+\section{Introduction}
+
+\subsection{Background: The Emergence of File-Capable AI Assistants}
+
+Recent advances in AI-powered development tools have produced a new class of software: integrated development environments with embedded large language models (LLMs) capable of reading, writing, and executing code within a project workspace. Tools such as Cursor, Windsurf, and Visual Studio Code with GitHub Copilot represent this category.
+
+While these tools are designed primarily for software development, their underlying capabilities are domain-agnostic:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Capability} & \textbf{Mechanism} & \textbf{General Application} \\
+\midrule
+File reading & Workspace indexing & Access research notes, data \\
+File writing & Direct modification & Generate reports, logs \\
+Command execution & Integrated terminal & Run scripts, API calls \\
+Web browsing & Built-in browser & Conduct research \\
+Context maintenance & Conversation history & Task continuity \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This combination---perception through file reading, action through file writing and command execution, and memory through persistent files---constitutes the functional requirements for an autonomous agent system.
+
+\subsection{The Observation}
+
+The central observation motivating this work is straightforward: \textbf{if an AI assistant can read files, write files, and execute commands, it already possesses the infrastructure required for autonomous multi-step task execution.} What it lacks is not capability, but \emph{structure}---a framework for knowing what to do, how to do it, and how to track progress across iterations.
+
+\subsection{Contributions}
+
+This paper makes the following contributions:
+\begin{enumerate}
+  \item \textbf{Protocol Specification:} We define the Path-Way Protocol, a minimal three-file architecture that enables recursive autonomous behavior in any file-capable AI assistant.
+  \item \textbf{Transparency Mechanism:} We demonstrate how file-based state externalization creates inherently transparent agent operation.
+  \item \textbf{Writing as Coordination:} We articulate the principle that natural language documents can serve as the primary coordination mechanism between human and agent.
+  \item \textbf{Case Study:} We provide a complete, reproducible example of the protocol applied to market research.
+  \item \textbf{Reusable Templates:} We offer templates that practitioners can adapt for their own workflows.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{LLM Agent Architectures}
+
+ReAct (Yao et al., 2022) introduced the pattern of interleaving reasoning with action and observation. Reflexion (Shinn et al., 2023) extended this with verbal self-reflection. Meta-Prompting (Suzgun \& Kalai, 2024) demonstrated that LLMs can generate prompts for themselves. Toolformer (Schick et al., 2023) showed that LLMs can learn to use external tools through self-supervised training.
+
+\subsection{Extended Mind and Cognitive Offloading}
+
+The Extended Mind thesis (Clark \& Chalmers, 1998) proposes that cognitive processes can extend beyond the brain to include external tools and representations. The Path-Way Protocol instantiates this concept directly: the agent's ``memory'' is externalized to files, its ``planning'' is documented in natural language, and its ``self-awareness'' is mediated through readable logs.
+
+\subsection{Project Documentation for AI Agents}
+
+Recent developments include standardized documentation formats for AI agents. AGENTS.md provides machine-readable project instructions, while CLAUDE.md offers project-specific context. The Path-Way Protocol extends this concept from static documentation to dynamic, recursive state management.
+
+\section{IDE as Autonomous Agent: A File-Based Architecture}
+
+\subsection{The Core Insight}
+
+Modern AI-powered IDEs are not just code editors---they are \textbf{fully-featured autonomous agent platforms}. They possess:
+\begin{itemize}
+  \item \textbf{Perception:} Can read any file in your project
+  \item \textbf{Action:} Can write files, run commands, browse the web
+  \item \textbf{Memory:} Files persist indefinitely, surviving session restarts
+\end{itemize}
+
+What's missing is not capability, but \textbf{structure}. The three-file protocol provides that structure.
+
+\subsection{A Minimalist Meta-Prompt Structure}
+
+The protocol uses three Markdown files as a \textbf{file-based cognitive architecture}:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{File} & \textbf{Cognitive Role} & \textbf{Agent Analogy} & \textbf{Persistence} \\
+\midrule
+\texttt{goal.md} & Long-term Goal Memory & The agent's ``mission'' & Static (set once) \\
+\texttt{how-to.md} & Procedural Knowledge & The agent's ``skills'' & Grows over time \\
+\texttt{path\_way.md} & Working Memory & The agent's ``scratchpad'' & Updates each step \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This maps directly to how autonomous agents are typically architected, but uses \textbf{plain text files instead of code}.
+
+\subsection{File Roles in Detail}
+
+\textbf{goal.md --- Long-Term Goal Memory:} This file is the agent's persistent objective. It answers: What are we trying to achieve? How should we approach it? When do we stop? What does success look like? \textbf{Key property:} This file does NOT change during execution.
+
+\textbf{how-to.md --- Procedural Knowledge:} This file documents the agent's available tools. \textbf{Key property:} This file CAN grow. If the agent creates a new tool (via vibe coding), it documents it here for future use.
+
+\textbf{path\_way.md --- Working Memory (Short-Term):} This is the most important file. After each iteration, the agent writes: (1) what it just did, (2) what it observed, (3) what it concluded, and critically, (4) \textbf{what to do next}. The ``Next Step'' field from round N becomes the prompt for round N+1. The agent literally writes its own future instructions.
+
+\subsection{Why This Works}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Concern} & \textbf{Solution} & \textbf{Benefit} \\
+\midrule
+Goal stability & \texttt{goal.md} is immutable & No goal drift \\
+Tool discovery & \texttt{how-to.md} is documented & Agent knows capabilities \\
+Context persistence & \texttt{path\_way.md} survives sessions & No token limit issues \\
+Self-direction & ``Next Step'' field & Recursive meta-prompting \\
+Transparency & All files are human-readable & Debug by reading \\
+Control & Human can edit any file & Redirect anytime \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Case Study: Market Research on Xiaohongshu}
+
+\subsection{Task Description}
+
+We applied the Path-Way Protocol to conduct market research on Xiaohongshu, a Chinese social media platform. The objective was to identify trending AI image content and produce recommendations for content creation.
+
+\subsection{Execution Trace}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}clll@{}}
+\toprule
+\textbf{Round} & \textbf{Keywords} & \textbf{Key Findings} & \textbf{Next Step} \\
+\midrule
+1 & ``AI art'', ``AI drawing'' & Trending tools identified & Explore applications \\
+2 & ``AI avatar'' & LinkedIn headshots in demand & Pivot to entertainment \\
+3 & ``Fun AI'' & Memes get 4000+ likes & Synthesize personas \\
+4 & (Synthesis) & 4 user personas identified & Generate recommendations \\
+5 & (Output) & 5 content ideas produced & Task complete \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Outcome}
+
+The agent produced a comprehensive research report including engagement data by content type, four reader personas, and five content recommendations.
+
+\textbf{Total human intervention during execution: 0} (after initial setup)
+
+\section{Properties of the Protocol}
+
+\textbf{Minimal Dependencies:} Only an AI-powered IDE, three Markdown files, and optional custom tools.
+
+\textbf{Transparency:} All state is visible and editable.
+
+\textbf{Human Control:} Edit any file to change direction.
+
+\textbf{Tool Extensibility:} New tools can be added via vibe coding and documented in \texttt{how-to.md}.
+
+\section{Limitations}
+
+\begin{itemize}
+  \item \textbf{Semi-Autonomous:} Current IDEs require human to trigger each iteration.
+  \item \textbf{IDE-Specific:} Requires LLM integration with file access and terminal.
+  \item \textbf{Scale Unknown:} Tested on 5-10 iterations; 50+ not validated.
+  \item \textbf{No Benchmarks:} This describes a methodology, not experimental results.
+  \item \textbf{LLM Dependency:} Assumes reliable file handling and instruction following.
+\end{itemize}
+
+\section{Discussion}
+
+\subsection{IDE as Agent Runtime}
+
+The emergence of AI-powered IDEs represents an underappreciated development in autonomous agent infrastructure. Rather than building agent capabilities from scratch, practitioners can leverage the capabilities that already exist in modern development environments.
+
+\subsection{The Role of Writing}
+
+The protocol foregrounds writing as a cognitive and coordinative activity. The agent ``thinks'' by writing; it ``remembers'' by reading what it wrote; it ``plans'' by articulating next steps in prose.
+
+\section{Conclusion}
+
+This paper has presented the Path-Way Protocol, a minimal methodology for transforming AI-powered IDEs into autonomous agent platforms. The key insights are:
+\begin{enumerate}
+  \item Modern IDEs already possess the capabilities required for autonomous operation
+  \item Externalizing state to files creates inherent transparency
+  \item Natural language documents can serve as coordination mechanisms
+  \item The structure of files, not the complexity of frameworks, determines agent capability
+\end{enumerate}
+
+\section*{References}
+
+\begin{enumerate}
+  \item Clark, A., \& Chalmers, D. (1998). The Extended Mind. \textit{Analysis}, 58(1), 7-19.
+  \item Yao, S., et al. (2022). ReAct: Synergizing Reasoning and Acting in Language Models. \textit{arXiv:2210.03629}.
+  \item Shinn, N., et al. (2023). Reflexion: Language Agents with Verbal Reinforcement Learning. \textit{arXiv:2303.11366}.
+  \item Schick, T., et al. (2023). Toolformer: Language Models Can Teach Themselves to Use Tools. \textit{arXiv:2302.04761}.
+  \item Suzgun, M., \& Kalai, A. T. (2024). Meta-Prompting: Enhancing Language Models with Task-Agnostic Scaffolding. \textit{arXiv:2401.12954}.
+  \item Anthropic. (2024). Building Effective Agents. \textit{Anthropic Documentation}.
+  \item Wei, J., et al. (2022). Chain-of-Thought Prompting Elicits Reasoning in LLMs. \textit{arXiv:2201.11903}.
+  \item Park, J. S., et al. (2023). Generative Agents: Interactive Simulacra of Human Behavior. \textit{arXiv:2304.03442}.
+\end{enumerate}
+
+\vspace{0.5cm}
+\noindent\textit{This paper describes a workflow methodology developed through practical experimentation. The authors share it in the spirit of contributing to the emerging practice of human-AI collaboration.}
+
+\end{document}

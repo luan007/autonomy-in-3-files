@@ -2,23 +2,28 @@
 
 **Transforming AI-Powered IDEs into Self-Directing Agent Platforms**
 
-*A minimalist approach requiring no frameworks, just structured Markdown*
+*A file-based, minimalist meta-prompt structure for autonomous agent behavior*
 
 ---
 
-## What This Is
+## The Core Idea
 
-Modern AI-powered IDEs (Cursor, Windsurf, VS Code + Copilot) can read files, write files, run commands, and browse the web. These capabilities constitute everything an autonomous agent needs: perception, action, and memory.
+Modern AI-powered IDEs (Cursor, Windsurf, VS Code + Copilot) already have everything an autonomous agent needs:
+- **Perception:** Can read any file
+- **Action:** Can write files, run commands, browse the web
+- **Memory:** Files persist indefinitely
 
-This repository demonstrates that you can achieve **multi-step autonomous behavior** using only **three Markdown files**—no frameworks, no dependencies, no custom code.
+They're not just code editors. **They're autonomous agent platforms.** You just need to give them structure.
 
-## The Three Files
+## The Three Files = Cognitive Architecture
 
-| File | Purpose | Who Writes |
-|------|---------|------------|
-| `goal.md` | Defines objective, methodology, termination condition | Human (before task) |
-| `how-to.md` | Documents available tools and usage | Human + Agent |
-| `path_way.md` | Logs progress, specifies next action | Agent (each iteration) |
+| File | Role | What It Does |
+|------|------|--------------|
+| `goal.md` | **Long-term Goal Memory** | Defines what you're trying to achieve, how to approach it, when to stop |
+| `how-to.md` | **Procedural Knowledge** | Documents available tools and how to use them (grows as new tools are created) |
+| `path_way.md` | **Working Memory** | Agent writes its progress here, including "Next Step" which becomes the next prompt |
+
+**The magic:** The "Next Step" from round N becomes the instruction for round N+1. The agent writes its own future prompts.
 
 ## How It Works
 
